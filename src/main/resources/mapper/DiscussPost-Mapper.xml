@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nowcoder.community.dao.DiscussPostMapper">
+    <sql id="selectFiles">
+        id,user_id,title,content,type,status,create_time,comment_count,score
+
+    </sql>
+
+    <sql id="insertFiles">
+        user_id,title,content,type,status,create_time,comment_count,score
+
+    </sql>
+
+
+    <insert id="insertDiscussPostRows" parameterType="com.nowcoder.community.entity.DiscussPost" keyProperty="id">
+        insert into discuss_post(<include refid="insertFiles"></include>)
+        values(#{userId},#{title},#{content},#{type},#{status},#{createTime},#{commentCount},#{score})
+    </insert>
+    <update id="updateCommentCount">
+        update discuss_post set comment_count = #{commentCount} where id = #{id}
+    </update>
+    <update id="updateType">
+
+        UPDATE discuss_post set type=#{type} where id=#{id}
+    </update>
+    <update id="updateStatus">
+        UPDATE discuss_post set status=#{status} where id=#{id}
+
+    </update>
+    <update id="updateScore">
+
+        UPDATE discuss_post set score=#{score} where id=#{id}
+    </update>
+
+
+    <select id="selectDiscussPosts" resultType="com.nowcoder.community.entity.DiscussPost">
+            SELECT <include refid="selectFiles"></include> from discuss_post WHERE status!=2
+            <if test="userId!=0">
+                AND user_id=#{userId}
+            </if>
+            <if test="orderModel==0">
+                order by type desc, create_time desc
+            </if>
+            <if test="orderModel==1">
+                order by type desc,score desc, create_time desc
+            </if>
+
+            limit #{offset},#{limit}
+    </select>
+    <select id="selectDiscussPostRows" resultType="java.lang.Integer" parameterType="int">
+        select count(id)
+        from discuss_post
+        where status != 2
+        <if test="userId!=0">
+            and user_id = #{userId}
+        </if>
+
+    </select>
+    <select id="selectDiscussPostById" resultType="com.nowcoder.community.entity.DiscussPost">
+                SELECT <include refid="selectFiles"></include> from discuss_post WHERE id=#{id};
+
+    </select>
+
+</mapper>
