@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @SpringBootTest
-@ContextConfiguration(classes = CommunityApplication.class)
+@ContextConfiguration(classes = NoticeApplication.class)
 class CommunityApplicationTests implements ApplicationContextAware {
     private ApplicationContext applicationContext;
 

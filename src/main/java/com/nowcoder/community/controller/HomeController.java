@@ -31,6 +31,12 @@ public class HomeController implements CommunityConstant {
     @Autowired
     private LikeService likeService;
 
+    @RequestMapping(value = "/",method = RequestMethod.GET)
+    public String root(){
+
+        return  "forward:/index";
+    }
+
     @RequestMapping(path = "/index", method = RequestMethod.GET)
     public String getIndexPage(Model model, Page page,@RequestParam(value = "orderModel",defaultValue ="0") int orderModel) {
         // 方法调用钱,SpringMVC会自动实例化Model和Page,并将Page注入Model.
